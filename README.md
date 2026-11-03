@@ -1,5 +1,7 @@
 # 视频剪辑工作区
 
+已安装 **video-talkcraft**：口播配音驱动的 Remotion 动效视频及多轨工作台。[安装与使用说明](.agents/skills/video-talkcraft/INSTALLATION.md)。已验证渲染、工作台和本地 ASR 对齐；Fish Audio 接入已准备，需在云环境设置中安全配置 FISH_AUDIO_API_KEY 后才能调用。注意：该技能使用非商业许可，商用需作者授权。
+
 已安装 **token-checkup**：本地分析 Claude Code / Codex 日志并生成用量 HTML 报告，无额外依赖。[使用说明与上游限制](.agents/skills/token-checkup/INSTALLATION.md)。本次仅完成合成数据验证，未扫描真实对话。
 
 已安装 **weread-reading-note**：整理已导出的微信读书 Markdown，生成读书笔记与跨书关联语义卡。[使用说明](.agents/skills/weread-reading-note/INSTALLATION.md)。首次使用需指定笔记文件及输出目录，无需登录微信读书。

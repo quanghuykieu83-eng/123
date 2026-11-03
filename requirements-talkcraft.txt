@@ -1,0 +1,16 @@
+certifi==2026.10.23
+cffi==2.1.1
+charset-normalizer==3.5.2
+idna==3.20
+numpy==2.5.4
+pillow==13.0.0
+pycparser==3.12
+pypinyin==0.55.0
+python-dotenv==1.2.4
+requests==2.34.2
+sherpa-onnx-core==2.0.1
+sherpa_onnx==2.0.1
+soundfile==0.14.0
+typing_extensions==4.16.0
+urllib3==2.8.0
+zhconv==1.4.3

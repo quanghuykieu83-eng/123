@@ -1,5 +1,7 @@
 # 视频剪辑工作约定
 
+- 用户明确要求 video-talkcraft 或口播配音视频时，先读 `.agents/skills/video-talkcraft/INSTALLATION.md` 和 SKILL.md。复用独立 `.venv-talkcraft`、锁定 runtime 及系统 Chromium 的本地适配。该工具是非商业许可，酒店营销等商用前需处理作者授权；本地 ASR 模型已安装，入口 scripts/talkcraft-align.sh。用户已要求启用 Fish Audio，调用入口 scripts/talkcraft-tts.sh；当前缺少密钥时提示在环境设置中安全配置，不向聊天索取密钥。
+
 - 用户要求 token 体检时，先读 `.agents/skills/token-checkup/SKILL.md` 和 `reference/narrative-rules.md`，再按 INSTALLATION.md 检查已知限制。安装不等于授权扫描真实日志；输出写入 `output/token-checkup/`，不能把合成测试当成真实用量。
 
 - 用户要求整理微信读书导出的 Markdown、生成读书笔记或语义卡时，先读 `.agents/skills/weread-reading-note/SKILL.md`。先确定用户实际 vault 和输出路径，不自动创建默认笔记目录；保留已有语义卡中的用户理解。

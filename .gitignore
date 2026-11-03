@@ -14,3 +14,9 @@ __pycache__/
 node_modules/
 projects/**/out/
 projects/**/music.wav
+
+.venv-talkcraft/
+.agents/skills/video-talkcraft/workbench/dist/
+.agents/skills/video-talkcraft/workbench/*.tsbuildinfo
+
+.agents/skills/video-talkcraft/workbench/node_modules
