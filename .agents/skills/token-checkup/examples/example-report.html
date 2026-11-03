@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token 体检报告</title>
+<style>
+:root{
+  --bg:#FBF9F6; --card:#FFF; --line:#E7E1D9;
+  --ink:#1F1B17; --ink2:#5C554E; --ink3:#8F8880;
+  --red:#A33A2A; --redbg:#FBF0EC; --green:#3F6B4A; --greenbg:#EFF5F0;
+  --gold:#8A5A23; --goldbg:#FBF4E8; --blue:#2E5A78; --bluebg:#EDF3F7;
+  --dim:#D9D2C8;
+  --shadow:0 1px 2px rgba(31,27,23,.05), 0 12px 32px rgba(31,27,23,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#16140F; --card:#1F1C17; --line:#33302A;
+    --ink:#F2EDE5; --ink2:#B8B0A5; --ink3:#857D72;
+    --red:#E58C7A; --redbg:#2E1F1A; --green:#8FB08F; --greenbg:#1C2620;
+    --gold:#DDA267; --goldbg:#2A2318; --blue:#8FB4CE; --bluebg:#1A242B;
+    --dim:#3D392F; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16140F; --card:#1F1C17; --line:#33302A;
+  --ink:#F2EDE5; --ink2:#B8B0A5; --ink3:#857D72;
+  --red:#E58C7A; --redbg:#2E1F1A; --green:#8FB08F; --greenbg:#1C2620;
+  --gold:#DDA267; --goldbg:#2A2318; --blue:#8FB4CE; --bluebg:#1A242B;
+  --dim:#3D392F; --shadow:none;
+}
+:root[data-theme="light"]{
+  --bg:#FBF9F6; --card:#FFF; --line:#E7E1D9;
+  --ink:#1F1B17; --ink2:#5C554E; --ink3:#8F8880;
+  --red:#A33A2A; --redbg:#FBF0EC; --green:#3F6B4A; --greenbg:#EFF5F0;
+  --gold:#8A5A23; --goldbg:#FBF4E8; --blue:#2E5A78; --bluebg:#EDF3F7;
+  --dim:#D9D2C8;
+  --shadow:0 1px 2px rgba(31,27,23,.05), 0 12px 32px rgba(31,27,23,.05);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:60px 28px 110px}
+.eyebrow{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;
+  letter-spacing:.16em;color:var(--ink3);text-transform:uppercase;margin-bottom:16px}
+h1{font-family:"Songti SC",Georgia,serif;font-size:42px;line-height:1.22;
+  margin:0 0 14px;letter-spacing:-.015em;text-wrap:balance}
+h2{font-family:"Songti SC",Georgia,serif;font-size:27px;margin:58px 0 6px;
+  letter-spacing:-.01em;line-height:1.3;text-wrap:balance}
+h2 .num{color:var(--ink3);font-family:ui-monospace,Menlo,monospace;font-size:13px;
+  letter-spacing:.1em;display:block;margin-bottom:9px;font-weight:400}
+h3{font-family:"Songti SC",Georgia,serif;font-size:19px;margin:0 0 9px}
+p{margin:0 0 16px}
+.dek{font-size:17px;color:var(--ink2);margin:0 0 10px;line-height:1.7;max-width:62ch}
+.lede{font-size:16px;color:var(--ink2);margin-bottom:26px;max-width:64ch}
+.byline{font-size:12.5px;color:var(--ink3);font-family:ui-monospace,Menlo,monospace;
+  padding-top:16px;margin-top:20px;border-top:1px solid var(--line);line-height:1.8}
+b,strong{font-weight:600}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em;
+  background:var(--goldbg);padding:1px 6px;border-radius:4px;color:var(--gold)}
+.hero{margin:44px 0;padding:34px 36px;background:var(--card);border-radius:14px;
+  box-shadow:var(--shadow);border-left:4px solid var(--red)}
+.hero .n{font-family:"Songti SC",Georgia,serif;font-size:70px;line-height:1;
+  letter-spacing:-.03em;color:var(--red)}
+.hero .n small{font-size:28px;letter-spacing:0}
+.hero .cap{font-size:14.5px;color:var(--ink2);margin-top:12px;line-height:1.7;max-width:56ch}
+.hero .cap b{color:var(--ink)}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14.5px}
+th,td{padding:12px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:11.5px;letter-spacing:.06em;color:var(--ink3);text-transform:uppercase;font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.total td{border-top:2px solid var(--ink);border-bottom:none;font-weight:600;font-size:15.5px}
+.win{color:var(--green);font-weight:600}
+.bad{color:var(--red);font-weight:600}
+.tblwrap{overflow-x:auto}
+.bars{margin:20px 0}
+.bar{display:flex;align-items:center;gap:13px;margin-bottom:8px;font-size:14px}
+.bar .lbl{width:96px;text-align:right;color:var(--ink2);
+  font-family:ui-monospace,Menlo,monospace;font-size:12.5px;flex-shrink:0}
+.bar .track{flex:1;height:25px;background:var(--dim);border-radius:5px;overflow:hidden;min-width:60px}
+.bar .fill{height:100%;background:var(--green);border-radius:5px}
+.bar.warm .fill{background:var(--gold)}
+.bar.hot .fill{background:var(--red)}
+.bar .val{width:96px;color:var(--ink2);font-family:ui-monospace,Menlo,monospace;
+  font-size:12.5px;flex-shrink:0}
+.note{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:16px 20px;font-size:14px;color:var(--ink2);margin:14px 0}
+.note b{color:var(--ink)}
+.plain{background:var(--bluebg);border-left:3px solid var(--blue);border-radius:10px;
+  padding:22px 26px;margin:24px 0}
+.plain .t{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.12em;
+  color:var(--blue);text-transform:uppercase;margin-bottom:11px}
+.plain p{font-size:15px;color:var(--ink2);margin:0 0 11px}
+.plain p:last-child{margin-bottom:0}
+.plain b{color:var(--ink)}
+.caveat{background:var(--goldbg);border:1px solid var(--gold);border-radius:12px;
+  padding:24px 28px;margin:32px 0}
+.caveat h3{color:var(--gold);font-size:18px;margin-bottom:11px}
+.caveat ul{margin:0;padding-left:20px}
+.caveat li{font-size:14px;color:var(--ink2);margin-bottom:9px}
+.caveat b{color:var(--ink)}
+.verdict{background:var(--greenbg);border:1px solid var(--green);border-radius:14px;
+  padding:30px 34px;margin:30px 0}
+.verdict h3{color:var(--green);margin-bottom:12px;font-size:21px}
+.verdict .n{font-family:"Songti SC",Georgia,serif;font-size:52px;line-height:1;
+  color:var(--green);letter-spacing:-.02em}
+.verdict .n small{font-size:21px}
+.verdict p{font-size:14.5px;color:var(--ink2);margin:14px 0 0}
+.delta{font-family:ui-monospace,Menlo,monospace;font-weight:600}
+.delta.up{color:var(--red)} .delta.down{color:var(--green)} .delta.flat{color:var(--ink3)}
+hr{border:0;border-top:1px solid var(--line);margin:50px 0}
+.foot{font-size:12.5px;color:var(--ink3);line-height:1.8;font-family:ui-monospace,Menlo,monospace}
+@media(max-width:600px){
+  h1{font-size:31px} h2{font-size:23px} .hero{padding:26px 22px} .hero .n{font-size:52px}
+  .wrap{padding:40px 18px 80px}
+  .bar .lbl{width:70px;font-size:11px} .bar .val{width:74px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Token 体检 · 全量报告</div>
+  <h1>你的 token 花在哪，<br>你的时间等在哪</h1>
+  <p class="dek">这份报告只陈述从你自己日志里测出来的数字。
+  它不下"健康 / 浪费"之类的判断——没有权威标准可依，所有的线都该由你自己定。</p>
+  <div class="byline">
+  数据源：<code>~/.claude/projects</code>· <code>~/.codex/sessions</code>
+  · 时间窗 全部历史<br>
+  主对话 19,556 轮 / 305 会话
+  · 另有子 agent 4,216 轮（已排除，理由见文末）<br>
+  生成于 2026-07-01T09:00:00+00:00
+  </div>
+
+  <div class="hero">
+    <div class="n">78<small> 小时</small></div>
+    <div class="cap">这是你<b>在等模型回话</b>上花掉的时间，共 19,158 轮，
+    折合 <b>10 个工作日</b>。<br>
+    已剔除 8 个超过 10 分钟的样本（视为人离开了）。</div>
+  </div>
+
+  <div class="plain">
+    <div class="t">先说清楚一件事</div>
+    <p><b>模型没有记忆。</b>你每问一句，它都要把之前说过的全部内容重读一遍，然后才回答。</p>
+    <p>所以第 1 轮它读 1 页，第 200 轮可能在读几百页——<b>就为了回答你一句"嗯，然后呢"。</b></p>
+    <p>这意味着<b>重读本身是架构决定的，不是坏习惯</b>。
+    真正要问的是：这些重读里，有多少是躲不掉的？下一节给出分母。</p>
+  </div>
+
+  <h2><span class="num">01</span>重读里，有多少是躲不掉的</h2>
+  <p class="lede">假设你每一轮都开新对话、完全不积累历史，那些无论如何都要重读的固定内容有多少？
+  这个数就是分母。</p>
+
+  <div class="verdict">
+    <h3>重读量的构成</h3>
+    <div class="n">84<small>%</small></div>
+    <p>只有 <b>16%</b> 是架构决定、砍不掉的。
+    剩下 <b>84%</b> 来自历史累积——<b>这部分才是能改的</b>。</p>
+    <p style="margin-top:10px">而且它高度集中：<b>最长的 10 个会话贡献了其中的
+    66%</b>。</p>
+  </div>
+
+  <div class="note"><b>口径：</b>地基（会话内最小非零上下文）× 轮数 ÷ 实际重读总量。<br>
+  <b>⚠ 这不是可省收益：</b>behavioral_pct 是可压缩量的**上界**，不是可省收益：真开新对话要重新交代背景、重读文件，实际能省的更少。这是会计恒等式，不是因果估计。</div>
+
+  <h2><span class="num">02</span>上下文和响应速度</h2>
+  <p class="lede">先看未经处理的曲线，再看控制变量之后的版本——两者结论不同，
+  <b>能引用的是后者</b>。</p>
+
+  <div class="bars"><div class="bar"><span class="lbl"><50K</span><span class="track"><span class="fill" style="width:50%"></span></span><span class="val">3.7s</span></div><div class="bar"><span class="lbl">50-100K</span><span class="track"><span class="fill" style="width:47%"></span></span><span class="val">3.5s</span></div><div class="bar"><span class="lbl">100-150K</span><span class="track"><span class="fill" style="width:54%"></span></span><span class="val">4.0s</span></div><div class="bar warm"><span class="lbl">150-200K</span><span class="track"><span class="fill" style="width:59%"></span></span><span class="val">4.4s</span></div><div class="bar warm"><span class="lbl">200-300K</span><span class="track"><span class="fill" style="width:73%"></span></span><span class="val">5.4s</span></div><div class="bar hot"><span class="lbl">300-500K</span><span class="track"><span class="fill" style="width:92%"></span></span><span class="val">6.8s</span></div><div class="bar hot"><span class="lbl">>500K</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">7.4s</span></div></div>
+  <p class="note"><b>⚠ 上面这张图不能直接引用。</b>未控制的曲线混着任务难度（难任务同时导致上下文长、输出多）。引用时必须用 controlled_by_output；若各输出层的放大倍数差异很大，说明上下文效应依赖场景，不能给一个笼统倍数。</p>
+
+  <h3>控制输出长度后</h3>
+  <p>同一行内的样本输出长度基本相同，剩下的差异才更可能来自上下文本身。</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>回复长度</th><th class="num">&lt;100K</th><th class="num">100-250K</th><th class="num">&gt;250K</th><th class="num">层内放大</th></tr></thead>
+    <tbody><tr><td>&lt;200</td><td class="num">2.8s</td><td class="num">4.8s</td><td class="num">9.8s</td><td class="num" class="bad">3.50×</td></tr><tr><td>200-600</td><td class="num">2.7s</td><td class="num">3.9s</td><td class="num">6.7s</td><td class="num" class="bad">2.48×</td></tr><tr><td>600-1.5K</td><td class="num">4.3s</td><td class="num">4.9s</td><td class="num">5.8s</td><td class="num">1.35×</td></tr><tr><td>&gt;1.5K</td><td class="num">10.3s</td><td class="num">5.8s</td><td class="num">5.9s</td><td class="num" class="win">0.57×</td></tr></tbody>
+  </table></div>
+  <p class="note">若各行的放大倍数差异很大，说明<b>上下文的影响依赖场景</b>，
+  不能给出一个笼统的"慢 N 倍"。</p>
+
+  <h2><span class="num">03</span>你的上下文分布</h2>
+  <p class="lede">这一节<b>只给分布，不给判断</b>。目前没有任何权威标准说明多少算健康，
+  实测也不存在拐点——只有连续递增的代价。<b>线该由你自己定。</b></p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>分位</th><th class="num">P25</th><th class="num">P50</th>
+    <th class="num">P75</th><th class="num">P90</th><th class="num">P99</th></tr></thead>
+    <tbody><tr><td>每轮上下文</td>
+      <td class="num">125K</td><td class="num">241K</td>
+      <td class="num">402K</td><td class="num">543K</td>
+      <td class="num">799K</td></tr></tbody>
+  </table></div>
+  <p class="note"><b>怎么用：</b>建议从 P50 往下砍 30% 作为起步线，写进状态栏。
+  它是<b>你的操作线，不是行业标准</b>。</p>
+
+  <h2><span class="num">04</span>按项目：钱花在哪，以及该开什么药方</h2>
+  <p class="lede">最后一列决定建议内容。<b>两种类型的药方完全不同，混为一谈会给出无效建议。</b></p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>项目</th><th class="num">成本占比</th><th class="num">轮次</th>
+    <th class="num">均上下文</th><th class="num">P90</th><th>增长类型</th></tr></thead>
+    <tbody><tr><td>video-fx</td><td class="num">21.2%</td><td class="num">4,426</td><td class="num">266K</td><td class="num">468K</td><td class="win">每轮载重型</td></tr><tr><td>novel-viz</td><td class="num">14.4%</td><td class="num">2,147</td><td class="num">368K</td><td class="num">676K</td><td class="win">每轮载重型</td></tr><tr><td>agent-app</td><td class="num">9.3%</td><td class="num">1,419</td><td class="num">393K</td><td class="num">670K</td><td class="win">每轮载重型</td></tr><tr><td>chat-bot</td><td class="num">8.7%</td><td class="num">2,004</td><td class="num">253K</td><td class="num">551K</td><td class="bad">拖太长型</td></tr><tr><td>travel-map</td><td class="num">9.3%</td><td class="num">1,637</td><td class="num">315K</td><td class="num">558K</td><td class="bad">拖太长型</td></tr><tr><td>library</td><td class="num">8.2%</td><td class="num">1,640</td><td class="num">216K</td><td class="num">585K</td><td class="bad">拖太长型</td></tr><tr><td>motion-lab</td><td class="num">6.8%</td><td class="num">1,634</td><td class="num">250K</td><td class="num">484K</td><td class="bad">拖太长型</td></tr><tr><td>~ (home)</td><td class="num">5.3%</td><td class="num">949</td><td class="num">314K</td><td class="num">624K</td><td>—</td></tr><tr><td>particle-art</td><td class="num">3.0%</td><td class="num">661</td><td class="num">211K</td><td class="num">337K</td><td class="bad">拖太长型</td></tr><tr><td>token-audit</td><td class="num">2.5%</td><td class="num">524</td><td class="num">231K</td><td class="num">422K</td><td>—</td></tr><tr><td>content-review</td><td class="num">2.0%</td><td class="num">331</td><td class="num">288K</td><td class="num">470K</td><td class="bad">拖太长型</td></tr><tr><td>.workspaces</td><td class="num">1.7%</td><td class="num">383</td><td class="num">162K</td><td class="num">386K</td><td class="bad">拖太长型</td></tr></tbody>
+  </table></div>
+  <div class="note">
+    <b>拖太长型</b>（上下文随轮次稳定增长）→ 换气有效：开新对话或压缩。<br>
+    <b>每轮载重型</b>（上下文高但不随轮次增长）→ <b>换气无效</b>，要减少单轮读入量：
+    给精确路径和行段，别把整个目录灌进去。<br>
+    <b>—</b> 表示判定证据不足，只看数字，不给建议。
+  </div>
+
+  <h2><span class="num">05</span>测过并排除的项</h2>
+  <p class="lede">这一节和上面同样重要——<b>它是这份报告可信的证明</b>：
+  测了这些，都没问题，所以剩下的那个才是真的。</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>怀疑项</th><th class="num">实测</th><th>判决</th></tr></thead>
+    <tbody>
+      <tr><td>缓存反复失效，在重复付全价</td><td class="num">命中率 96%</td>
+        <td class="win">✅ 无问题</td></tr>
+      <tr><td>工具调用老失败，白烧 token</td><td class="num">失败率 2.79%</td>
+        <td class="win">
+        ✅ 无问题</td></tr>
+      <tr><td>工作散落临时目录，做完就丢</td><td class="num">临时路径 0.3%</td>
+        <td class="win">
+        ✅ 无问题</td></tr>
+      <tr><td>投入没沉淀成可复用资产</td><td class="num">在 git 内 61%</td>
+        <td class="win">
+        ✅ 大部分已沉淀</td></tr>
+      <tr><td>压缩（compact）用得太多</td>
+        <td class="num">14 次，主动 11 次</td>
+        <td class="">
+        已在主动使用</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>关于 26.9% 的"原路径已不存在"：</b>
+  path_missing 不等于&quot;工作已丢失&quot;——多数是目录被移动/改名。必须逐个核实后才能下结论。</p>
+  <p class="note"><b>压缩触发时的上下文：</b>中位 574K，
+  范围 140K – 1.01M，压缩后中位 70K。<br>
+  before_* 是观测到的分布，不是系统阈值——不同模型窗口不同，且该值系统性偏低。</p>
+
+  <h2><span class="num">06</span>你怎么提需求</h2>
+  <p class="lede">三个指标里<b>只有第一个是干净的</b>，理由见下。</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>指标</th><th class="num">实测</th><th>可信度</th></tr></thead>
+    <tbody>
+      <tr><td>开场消息长度（中位）</td>
+        <td class="num">135 字</td>
+        <td class="win">高 — 测的是行为，几乎不受任务难度影响</td></tr>
+      <tr><td>以少于 30 字开场的比例</td><td class="num">16.6%</td>
+        <td class="win">高 — 同上</td></tr>
+      <tr><td>同一文件被改 8 次以上</td><td class="num">18.1%</td>
+        <td>中 — 混着"没说清"与"这活本来就要反复调"</td></tr>
+      <tr><td>消息含纠正语</td><td class="num">18.7%</td>
+        <td>低 — 字符串匹配，必然误伤，只能看自身趋势</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">样本：<b>66 个真人会话</b>
+  （已剔除 241 个程序化会话——开场白（前200字）在 ≥5 个会话中重复者判为应用/定时任务的模板，已剔除。）<br>
+  那 18.1% 被反复修改的文件吃掉了 <b>70.1%</b> 的编辑动作。</p>
+  <p class="note">只有 first_msg_chars 是干净的行为指标（不受任务难度影响）。rework 混着&quot;没说清导致返工&quot;与&quot;这活本来就要反复调&quot;，数据分不开；correction_rate 是字符串匹配，必然误伤。三者都只能看自身趋势，不能当 KPI。</p>
+
+  <h2><span class="num">07</span>跨工具对照：Codex</h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>指标</th><th class="num">数值</th></tr></thead>
+    <tbody>
+      <tr><td>会话数</td><td class="num">180</td></tr>
+      <tr><td>轮次</td><td class="num">7,285</td></tr>
+      <tr><td>平均每轮上下文</td><td class="num">194K</td></tr>
+      <tr><td>P90 上下文</td><td class="num">371K</td></tr>
+      <tr><td>reasoning token</td><td class="num">496K</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note"><b>口径：</b>total_token_usage(取会话最后一条)<br>不折算货币：缺少权威的第三方定价，宁可不写。与 Claude Code 的加权成本不可直接相比（权重体系不同）。</p>
+
+  <div class="caveat">
+    <h3>这份报告不能证明什么</h3>
+    <ul>
+      <li><b>"84% 是行为造成的"是上界，不是可省收益。</b>
+      真开新对话要重新交代背景、重读文件，实际能省的更少。这是会计恒等式，不是因果估计。</li>
+      <li><b>没有行业基准。</b>本报告不做横向对比——所有判断都是你和你自己比。
+      任何声称"业界标准是 X"的说法都应被怀疑。</li>
+      <li><b>时间成本含混淆。</b>难任务同时导致上下文长和输出多。已按输出长度分层来缓解，
+      但无法完全分离。</li>
+      <li><b>月度对比不足以判断进步。</b>期间换过项目就会混淆，需至少 3 次体检才谈得上趋势。</li>
+      <li><b>子 agent 轮次已全部排除。</b>子 agent 轮次已从所有主指标中排除。把它们混进平均数会产生辛普森悖论：大量小上下文轮次会把主对话的真实负担稀释掉，得出&quot;很省&quot;的假结论。</li>
+      <li><b>成本是相对权重，不是账单。</b>相对权重，仅用于成本占比；不换算货币（定价会变，订阅制下也不等于账单）。</li>
+    </ul>
+  </div>
+  <hr>
+  <div class="foot">
+    由 <code>token-checkup</code> 生成。全部数据来自本机日志，未上传任何内容。<br>
+    每个数字都可指回 <code>facts.json</code>；叙事受 <code>reference/narrative-rules.md</code> 约束。<br>
+    子 agent 轮次：4,216（已排除）
+    · 读取失败文件数：0
+  </div>
+
+</div>
+</body>
+</html>

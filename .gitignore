@@ -1,0 +1,16 @@
+media/*
+!media/.gitkeep
+output/*
+!output/.gitkeep
+.venv/
+__pycache__/
+.cache/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+
+node_modules/
+projects/**/out/
+projects/**/music.wav

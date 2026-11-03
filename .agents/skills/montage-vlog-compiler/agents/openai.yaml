@@ -1,0 +1,4 @@
+interface:
+  display_name: "情绪混剪 Vlog 剪辑编译器"
+  short_description: "把参考审美、口播与授权素材编译成可验证的 Vlog 初剪方案"
+  default_prompt: "使用 $montage-vlog-compiler 分析参考片、口播与授权素材，生成可追溯的风格档案、语义锚点表和剪辑执行单。"
